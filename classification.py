@@ -58,7 +58,9 @@ def main():
     ##### training #####
     try:
         # load model if possible
-        raw_models = pickle.load(open('./models/base_model.pt','rb'))
+        raw_models = pickle.load(open('./models/raw_model.pt','rb'))
+        raw_columns = pickle.load(open('./models/raw_columns','rb'))
+
     except:
         raw_models = xgb.XGBClassifier(n_estimators=200,
                                 max_depth=10,
@@ -71,7 +73,13 @@ def main():
                                 random_state=SEED)
 
         raw_models.fit(x_init_train, y_init_train)
-        pickle.dump(raw_models, open('./models/base_model.pt','wb'))
+        pickle.dump(raw_models, open('./models/raw_model.pt','wb'))
+        pickle.dump(raw_columns, open('./models/raw_columns','wb'))
+
+    y_pred = raw_models.predict(x_init_train)
+    accuracy = accuracy_score(y_init_train, y_pred)
+    print("Train accuracy: %.2f" % (accuracy * 100.0))
+
 
     # comparison with model feature importance
     feat_importance = list(raw_columns[raw_models.feature_importances_ > 0])
@@ -119,7 +127,8 @@ def main():
 
     try:
         # load model if possible
-        shap_models = pickle.load(open('shap_models.pt','rb'))
+        shap_models = pickle.load(open('./models/shap_models.pt','rb'))
+        shap_columns = pickle.load(open('./models/shap_columns','rb'))
 
     except:
         shap_models = xgb.XGBClassifier(n_estimators=200,
@@ -134,18 +143,19 @@ def main():
 
         shap_models.fit(x_shap_train, y_init_train)
         pickle.dump(shap_models, open('./models/shap_models.pt','wb'))
+        pickle.dump(shap_columns, open('./models/shap_columns','wb'))
 
-    # y_pred = shap_models.predict(x_shap_train)
-    # accuracy = accuracy_score(y_init_train, y_pred)
-    # print("Train accuracy: %.2f" % (accuracy * 100.0))
+    y_pred = shap_models.predict(x_shap_train)
+    accuracy = accuracy_score(y_init_train, y_pred)
+    print("Train accuracy: %.2f" % (accuracy * 100.0))
 
-    # x_test = pd.DataFrame(correct_dataset_new, columns=shap_columns)
-    # x_test.fillna(0, inplace=True)
-    # y_test = correct_dataset_new['CSRC_label']
+    x_test = pd.DataFrame(correct_dataset_new, columns=shap_columns)
+    x_test.fillna(0, inplace=True)
+    y_test = correct_dataset_new['CSRC_label']
 
-    # y_pred = shap_models.predict(x_test)
-    # accuracy = accuracy_score(y_test, y_pred)
-    # print("Train accuracy: %.2f" % (accuracy * 100.0))
+    y_pred = shap_models.predict(x_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    print("Train accuracy: %.2f" % (accuracy * 100.0))
 
 # run main
 if __name__ == "__main__":
