@@ -37,7 +37,7 @@ def main():
     shap_columns = pickle.load(open('./models/shap_columns','rb'))
 
     # Datasets
-    analysis_datasets = pd.read_parquet('./datasets/collectResult/12000-15000.parquet')
+    analysis_datasets = pd.read_parquet('./datasets/collectResult/21000-22300.parquet')
     
     raw_analysis_datasets = pd.DataFrame(analysis_datasets, columns=raw_columns)
     raw_analysis_datasets.fillna(0, inplace=True)
@@ -97,7 +97,7 @@ def main():
                             'xai_total_value':xai_total_value
                             })
 
-    result.to_csv("./12000-15000.csv", mode='w')
+    result.to_csv("./21000-22300.csv", mode='w')
 
 # run main
 if __name__ == "__main__":
