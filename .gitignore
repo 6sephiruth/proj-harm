@@ -2,3 +2,6 @@ __pycache__
 models
 datasets
 results
+
+proj_similary/__pycache__
+proj_similary/similary_img

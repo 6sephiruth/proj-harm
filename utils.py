@@ -55,6 +55,7 @@ def cleaning_dataset(dataset):
     데이터셋 내 에서 불필요한 속성 지우고,
     가로, 세로 sum 0인 것들 삭제
     """
+    
     try:
         dataset = pd.DataFrame(dataset.drop('Unnamed: 0', axis=1))
         dataset = pd.DataFrame(dataset.drop('Unnamed: 0.1', axis=1))
