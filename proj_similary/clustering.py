@@ -24,7 +24,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Uncomment this to designate a specific GPU
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
-os.environ['TF_DETERMINISTIC_OPS'] = '0'
+os.environ['TF_DETERMINISTIC_OPS'] = '2'
 
 # enable memory growth
 physical_devices = tf.config.list_physical_devices('GPU')
